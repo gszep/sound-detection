@@ -1,0 +1,405 @@
+{
+  "annotations": [
+    {
+      "time": 0,
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 10.0,
+          "confidence": 1.0,
+          "value": {
+            "snr": 0,
+            "event_duration": 10.0,
+            "role": "background",
+            "time_stretch": null,
+            "event_time": 0,
+            "pitch_shift": null,
+            "label": "noise",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/background/noise/brownian.wav",
+            "source_time": 0
+          }
+        },
+        {
+          "time": 4.81499,
+          "duration": 0.9989690000000001,
+          "confidence": 1.0,
+          "value": {
+            "snr": 12.07455085300587,
+            "event_duration": 0.8785820101094906,
+            "role": "foreground",
+            "time_stretch": 1.1370241606780116,
+            "event_time": 4.81499032919095,
+            "pitch_shift": 1.860425741410836,
+            "label": "engine_idling",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/engine_idling/23219-5-0-4.wav",
+            "source_time": 0.0
+          }
+        },
+        {
+          "time": 5.323273,
+          "duration": 1.756572,
+          "confidence": 1.0,
+          "value": {
+            "snr": 9.806830703249727,
+            "event_duration": 1.7669688457262729,
+            "role": "foreground",
+            "time_stretch": 0.9941160374994885,
+            "event_time": 5.32327285350321,
+            "pitch_shift": -1.015221796693748,
+            "label": "street_music",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/street_music/185375-9-0-60.wav",
+            "source_time": 0.0
+          }
+        },
+        {
+          "time": 4.6210510000000005,
+          "duration": 2.085661,
+          "confidence": 1.0,
+          "value": {
+            "snr": 12.334794509813628,
+            "event_duration": 2.4516732172268427,
+            "role": "foreground",
+            "time_stretch": 0.8507091875043217,
+            "event_time": 4.621050774649747,
+            "pitch_shift": -2.995843873395602,
+            "label": "siren",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/siren/123688-8-0-13.wav",
+            "source_time": 0.0
+          }
+        },
+        {
+          "time": 3.8981480000000004,
+          "duration": 1.0175290000000001,
+          "confidence": 1.0,
+          "value": {
+            "snr": 10.117592840439274,
+            "event_duration": 0.9134333418287264,
+            "role": "foreground",
+            "time_stretch": 1.113961003162569,
+            "event_time": 3.898148108550151,
+            "pitch_shift": -2.391506599929632,
+            "label": "children_playing",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/children_playing/169045-2-0-8.wav",
+            "source_time": 0.0
+          }
+        },
+        {
+          "time": 3.7556410000000002,
+          "duration": 3.2035720000000003,
+          "confidence": 1.0,
+          "value": {
+            "snr": 17.28644535841242,
+            "event_duration": 3.4315151918829256,
+            "role": "foreground",
+            "time_stretch": 0.9335737243027085,
+            "event_time": 3.755640991825314,
+            "pitch_shift": -0.6056498178750163,
+            "label": "children_playing",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/children_playing/174906-2-0-14.wav",
+            "source_time": 0.0
+          }
+        }
+      ],
+      "annotation_metadata": {
+        "annotation_rules": "",
+        "annotator": {},
+        "corpus": "",
+        "curator": {
+          "email": "",
+          "name": ""
+        },
+        "annotation_tools": "",
+        "validation": "",
+        "data_source": "",
+        "version": ""
+      },
+      "duration": 10.0,
+      "namespace": "sound_event",
+      "sandbox": {
+        "scaper": {
+          "n_events": 5,
+          "fg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/",
+          "ref_db": -50,
+          "n_channels": 1,
+          "bg_labels": [
+            "noise"
+          ],
+          "polyphony_max": 4,
+          "allow_repeated_source": false,
+          "fg_labels": [
+            "engine_idling",
+            "children_playing",
+            "street_music",
+            "dog_bark",
+            "gun_shot",
+            "car_horn",
+            "siren",
+            "air_conditioner",
+            "jackhammer",
+            "drilling"
+          ],
+          "protected_labels": [],
+          "fade_out_len": 0.01,
+          "bg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/background/",
+          "bg_spec": [
+            [
+              [
+                "const",
+                "noise"
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                10.0
+              ],
+              [
+                "const",
+                0
+              ],
+              "background",
+              null,
+              null
+            ]
+          ],
+          "duration": 10.0,
+          "reverb": 0.1,
+          "fade_in_len": 0.01,
+          "polyphony_gini": 0.2772400393081683,
+          "allow_repeated_label": true,
+          "fg_spec": [
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "file_metadata": {
+    "identifiers": {},
+    "title": "",
+    "artist": "",
+    "release": "",
+    "duration": 10.0,
+    "jams_version": "0.2.2"
+  },
+  "sandbox": {}
+}

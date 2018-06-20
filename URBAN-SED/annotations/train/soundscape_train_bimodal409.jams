@@ -1,0 +1,347 @@
+{
+  "file_metadata": {
+    "duration": 10.0,
+    "artist": "",
+    "jams_version": "0.2.2",
+    "title": "",
+    "release": "",
+    "identifiers": {}
+  },
+  "annotations": [
+    {
+      "annotation_metadata": {
+        "data_source": "",
+        "annotator": {},
+        "annotation_rules": "",
+        "version": "",
+        "corpus": "",
+        "validation": "",
+        "annotation_tools": "",
+        "curator": {
+          "name": "",
+          "email": ""
+        }
+      },
+      "sandbox": {
+        "scaper": {
+          "n_events": 4,
+          "allow_repeated_source": false,
+          "reverb": 0.1,
+          "duration": 10.0,
+          "fade_in_len": 0.01,
+          "fg_spec": [
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                3.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                3.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                7.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                7.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ]
+          ],
+          "ref_db": -50,
+          "n_channels": 1,
+          "polyphony_gini": 0.6936154100208063,
+          "protected_labels": [],
+          "fg_labels": [
+            "engine_idling",
+            "children_playing",
+            "street_music",
+            "dog_bark",
+            "gun_shot",
+            "car_horn",
+            "siren",
+            "air_conditioner",
+            "jackhammer",
+            "drilling"
+          ],
+          "fade_out_len": 0.01,
+          "bg_spec": [
+            [
+              [
+                "const",
+                "noise"
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                10.0
+              ],
+              [
+                "const",
+                0
+              ],
+              "background",
+              null,
+              null
+            ]
+          ],
+          "fg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/",
+          "polyphony_max": 2,
+          "bg_labels": [
+            "noise"
+          ],
+          "bg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/background/",
+          "allow_repeated_label": true
+        }
+      },
+      "time": 0,
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 10.0,
+          "confidence": 1.0,
+          "value": {
+            "source_time": 0,
+            "event_duration": 10.0,
+            "event_time": 0,
+            "time_stretch": null,
+            "pitch_shift": null,
+            "snr": 0,
+            "label": "noise",
+            "role": "background",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/background/noise/brownian.wav"
+          }
+        },
+        {
+          "time": 0.714674,
+          "duration": 2.3488830000000003,
+          "confidence": 1.0,
+          "value": {
+            "source_time": 0.0,
+            "event_duration": 2.932102788833851,
+            "event_time": 0.7146742608913712,
+            "time_stretch": 0.8010917779571886,
+            "pitch_shift": -0.21886701720340795,
+            "snr": 27.994044464997664,
+            "label": "drilling",
+            "role": "foreground",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/drilling/77774-4-0-1.wav"
+          }
+        },
+        {
+          "time": 5.130310000000001,
+          "duration": 2.353183,
+          "confidence": 1.0,
+          "value": {
+            "source_time": 0.0,
+            "event_duration": 2.84,
+            "event_time": 5.130309960475867,
+            "time_stretch": 0.8285853906903854,
+            "pitch_shift": -2.757578959978499,
+            "snr": 20.502531580515473,
+            "label": "jackhammer",
+            "role": "foreground",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/jackhammer/98223-7-3-0.wav"
+          }
+        },
+        {
+          "time": 7.220350000000001,
+          "duration": 2.645627,
+          "confidence": 1.0,
+          "value": {
+            "source_time": 0.0,
+            "event_duration": 2.618420522476409,
+            "event_time": 7.220349519360395,
+            "time_stretch": 1.010390439304532,
+            "pitch_shift": 2.2955173983479398,
+            "snr": 14.378473435323077,
+            "label": "car_horn",
+            "role": "foreground",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/car_horn/72259-1-9-11.wav"
+          }
+        },
+        {
+          "time": 4.548325,
+          "duration": 1.261967,
+          "confidence": 1.0,
+          "value": {
+            "source_time": 0.0,
+            "event_duration": 1.2593054569812137,
+            "event_time": 4.548325315409698,
+            "time_stretch": 1.0021133078307536,
+            "pitch_shift": 2.375816646654055,
+            "snr": 16.84901823542075,
+            "label": "engine_idling",
+            "role": "foreground",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/train/foreground/engine_idling/39854-5-1-1.wav"
+          }
+        }
+      ],
+      "duration": 10.0,
+      "namespace": "sound_event"
+    }
+  ],
+  "sandbox": {}
+}

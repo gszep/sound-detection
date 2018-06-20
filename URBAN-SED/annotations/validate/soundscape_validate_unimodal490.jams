@@ -1,0 +1,347 @@
+{
+  "sandbox": {},
+  "annotations": [
+    {
+      "sandbox": {
+        "scaper": {
+          "polyphony_gini": 0.2656114141343303,
+          "bg_labels": [
+            "noise"
+          ],
+          "allow_repeated_source": false,
+          "protected_labels": [],
+          "fade_in_len": 0.01,
+          "allow_repeated_label": true,
+          "polyphony_max": 2,
+          "fg_spec": [
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                5.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ]
+          ],
+          "fg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/",
+          "ref_db": -50,
+          "n_channels": 1,
+          "fade_out_len": 0.01,
+          "n_events": 4,
+          "bg_spec": [
+            [
+              [
+                "const",
+                "noise"
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                10.0
+              ],
+              [
+                "const",
+                0
+              ],
+              "background",
+              null,
+              null
+            ]
+          ],
+          "reverb": 0.1,
+          "bg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/background/",
+          "fg_labels": [
+            "engine_idling",
+            "children_playing",
+            "street_music",
+            "dog_bark",
+            "gun_shot",
+            "car_horn",
+            "siren",
+            "air_conditioner",
+            "jackhammer",
+            "drilling"
+          ],
+          "duration": 10.0
+        }
+      },
+      "namespace": "sound_event",
+      "data": [
+        {
+          "confidence": 1.0,
+          "time": 0.0,
+          "value": {
+            "event_time": 0,
+            "role": "background",
+            "pitch_shift": null,
+            "time_stretch": null,
+            "snr": 0,
+            "label": "noise",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/background/noise/brownian.wav",
+            "source_time": 0,
+            "event_duration": 10.0
+          },
+          "duration": 10.0
+        },
+        {
+          "confidence": 1.0,
+          "time": 3.392039,
+          "value": {
+            "event_time": 3.3920391735476865,
+            "role": "foreground",
+            "pitch_shift": 2.338263955769518,
+            "time_stretch": 1.1713646348263445,
+            "snr": 10.300162872795145,
+            "label": "car_horn",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/car_horn/155283-1-0-0.wav",
+            "source_time": 0.0,
+            "event_duration": 0.606077
+          },
+          "duration": 0.709937
+        },
+        {
+          "confidence": 1.0,
+          "time": 7.607249,
+          "value": {
+            "event_time": 7.6072489442133175,
+            "role": "foreground",
+            "pitch_shift": 2.6034097708373247,
+            "time_stretch": 0.8518676632615771,
+            "snr": 21.761828532214466,
+            "label": "dog_bark",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/dog_bark/27216-3-0-21.wav",
+            "source_time": 0.0,
+            "event_duration": 1.9156047384589598
+          },
+          "duration": 1.631842
+        },
+        {
+          "confidence": 1.0,
+          "time": 4.841112,
+          "value": {
+            "event_time": 4.841112496258399,
+            "role": "foreground",
+            "pitch_shift": -1.611916500238627,
+            "time_stretch": 0.8441933966839996,
+            "snr": 15.487096298327575,
+            "label": "gun_shot",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/gun_shot/145612-6-0-0.wav",
+            "source_time": 0.0,
+            "event_duration": 0.975083
+          },
+          "duration": 0.8231590000000001
+        },
+        {
+          "confidence": 1.0,
+          "time": 7.696517,
+          "value": {
+            "event_time": 7.696517072366937,
+            "role": "foreground",
+            "pitch_shift": -0.45478244629693476,
+            "time_stretch": 1.094826189994677,
+            "snr": 21.954979149076415,
+            "label": "dog_bark",
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/dog_bark/89210-3-0-0.wav",
+            "source_time": 0.0,
+            "event_duration": 0.9652348722179387
+          },
+          "duration": 1.056764
+        }
+      ],
+      "annotation_metadata": {
+        "annotation_rules": "",
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "corpus": "",
+        "version": "",
+        "validation": "",
+        "data_source": "",
+        "annotation_tools": "",
+        "annotator": {}
+      },
+      "time": 0,
+      "duration": 10.0
+    }
+  ],
+  "file_metadata": {
+    "artist": "",
+    "title": "",
+    "jams_version": "0.2.2",
+    "identifiers": {},
+    "release": "",
+    "duration": 10.0
+  }
+}

@@ -1,0 +1,395 @@
+{
+  "annotations": [
+    {
+      "annotation_metadata": {
+        "corpus": "",
+        "data_source": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "annotator": {},
+        "validation": "",
+        "curator": {
+          "email": "",
+          "name": ""
+        },
+        "version": ""
+      },
+      "sandbox": {
+        "scaper": {
+          "allow_repeated_label": true,
+          "protected_labels": [],
+          "bg_spec": [
+            [
+              [
+                "const",
+                "noise"
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                10.0
+              ],
+              [
+                "const",
+                0
+              ],
+              "background",
+              null,
+              null
+            ]
+          ],
+          "fade_out_len": 0.01,
+          "duration": 10.0,
+          "polyphony_max": 2,
+          "polyphony_gini": 0.522635197688921,
+          "n_channels": 1,
+          "allow_repeated_source": false,
+          "fg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/",
+          "bg_labels": [
+            "noise"
+          ],
+          "ref_db": -50,
+          "n_events": 5,
+          "fg_spec": [
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ]
+          ],
+          "fade_in_len": 0.01,
+          "fg_labels": [
+            "engine_idling",
+            "children_playing",
+            "street_music",
+            "dog_bark",
+            "gun_shot",
+            "car_horn",
+            "siren",
+            "air_conditioner",
+            "jackhammer",
+            "drilling"
+          ],
+          "reverb": 0.1,
+          "bg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/background/"
+        }
+      },
+      "time": 0,
+      "namespace": "sound_event",
+      "data": [
+        {
+          "value": {
+            "label": "noise",
+            "source_time": 0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/background/noise/brownian.wav",
+            "pitch_shift": null,
+            "time_stretch": null,
+            "event_time": 0,
+            "snr": 0,
+            "event_duration": 10.0,
+            "role": "background"
+          },
+          "confidence": 1.0,
+          "duration": 10.0,
+          "time": 0.0
+        },
+        {
+          "value": {
+            "label": "jackhammer",
+            "source_time": 0.0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/jackhammer/125678-7-1-6.wav",
+            "pitch_shift": 0.9912992717856177,
+            "time_stretch": 0.8330790863188444,
+            "event_time": 8.153746059643112,
+            "snr": 28.60367507751992,
+            "event_duration": 2.216180877274204,
+            "role": "foreground"
+          },
+          "confidence": 1.0,
+          "duration": 1.846254,
+          "time": 8.153746
+        },
+        {
+          "value": {
+            "label": "children_playing",
+            "source_time": 0.0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/children_playing/165529-2-0-3.wav",
+            "pitch_shift": -2.000575049311555,
+            "time_stretch": 0.8185803115810315,
+            "event_time": 7.8307467790577885,
+            "snr": 18.818586815709796,
+            "event_duration": 1.954672430787364,
+            "role": "foreground"
+          },
+          "confidence": 1.0,
+          "duration": 1.6000560000000001,
+          "time": 7.830747000000001
+        },
+        {
+          "value": {
+            "label": "street_music",
+            "source_time": 0.0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/street_music/157940-9-0-4.wav",
+            "pitch_shift": 2.1004711812199153,
+            "time_stretch": 0.8315598250409704,
+            "event_time": 6.100134416360986,
+            "snr": 7.96660574858054,
+            "event_duration": 1.7083668543329145,
+            "role": "foreground"
+          },
+          "confidence": 1.0,
+          "duration": 1.420609,
+          "time": 6.100134000000001
+        },
+        {
+          "value": {
+            "label": "dog_bark",
+            "source_time": 0.0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/dog_bark/171464-3-1-0.wav",
+            "pitch_shift": 1.0659833154886815,
+            "time_stretch": 0.9824085822691709,
+            "event_time": 3.3109834058056675,
+            "snr": 28.009690737699355,
+            "event_duration": 2.562179053237209,
+            "role": "foreground"
+          },
+          "confidence": 1.0,
+          "duration": 2.517107,
+          "time": 3.3109830000000002
+        },
+        {
+          "value": {
+            "label": "gun_shot",
+            "source_time": 0.0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/validate/foreground/gun_shot/159708-6-2-0.wav",
+            "pitch_shift": -2.4542765255557724,
+            "time_stretch": 1.146754371971528,
+            "event_time": 7.791796596662516,
+            "snr": 9.235281036990905,
+            "event_duration": 0.289604,
+            "role": "foreground"
+          },
+          "confidence": 1.0,
+          "duration": 0.33210500000000004,
+          "time": 7.791797000000001
+        }
+      ],
+      "duration": 10.0
+    }
+  ],
+  "sandbox": {},
+  "file_metadata": {
+    "artist": "",
+    "duration": 10.0,
+    "jams_version": "0.2.2",
+    "release": "",
+    "identifiers": {},
+    "title": ""
+  }
+}

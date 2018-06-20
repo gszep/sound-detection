@@ -1,0 +1,347 @@
+{
+  "file_metadata": {
+    "title": "",
+    "release": "",
+    "artist": "",
+    "identifiers": {},
+    "jams_version": "0.2.2",
+    "duration": 10.0
+  },
+  "annotations": [
+    {
+      "data": [
+        {
+          "value": {
+            "role": "background",
+            "event_duration": 10.0,
+            "pitch_shift": null,
+            "time_stretch": null,
+            "source_time": 0,
+            "snr": 0,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/background/noise/brownian.wav",
+            "label": "noise",
+            "event_time": 0
+          },
+          "time": 0.0,
+          "confidence": 1.0,
+          "duration": 10.0
+        },
+        {
+          "value": {
+            "role": "foreground",
+            "event_duration": 3.5113697541851154,
+            "pitch_shift": -2.3223721455271846,
+            "time_stretch": 0.8215671518093257,
+            "source_time": 0.0,
+            "snr": 13.666630127323202,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/drilling/180127-4-0-9.wav",
+            "label": "drilling",
+            "event_time": 4.043826296144043
+          },
+          "time": 4.043826,
+          "confidence": 1.0,
+          "duration": 2.8848260000000003
+        },
+        {
+          "value": {
+            "role": "foreground",
+            "event_duration": 1.62,
+            "pitch_shift": -1.304213946013714,
+            "time_stretch": 1.1008251850153856,
+            "source_time": 0.0,
+            "snr": 10.390718767753794,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/car_horn/100648-1-3-0.wav",
+            "label": "car_horn",
+            "event_time": 7.370449260062769
+          },
+          "time": 7.370449000000001,
+          "confidence": 1.0,
+          "duration": 1.7833370000000002
+        },
+        {
+          "value": {
+            "role": "foreground",
+            "event_duration": 2.6180969685369737,
+            "pitch_shift": -2.8352135778434127,
+            "time_stretch": 1.0549123850204358,
+            "source_time": 0.0,
+            "snr": 17.08594956203501,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/car_horn/28808-1-1-1.wav",
+            "label": "car_horn",
+            "event_time": 3.290248725534292
+          },
+          "time": 3.290249,
+          "confidence": 1.0,
+          "duration": 2.761863
+        },
+        {
+          "value": {
+            "role": "foreground",
+            "event_duration": 3.6135683339599796,
+            "pitch_shift": -1.3266089291406953,
+            "time_stretch": 0.8267996818484858,
+            "source_time": 0.0,
+            "snr": 19.89928128941161,
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/dog_bark/71312-3-0-4.wav",
+            "label": "dog_bark",
+            "event_time": 7.012302851144126
+          },
+          "time": 7.012303,
+          "confidence": 1.0,
+          "duration": 2.9876970000000003
+        }
+      ],
+      "namespace": "sound_event",
+      "annotation_metadata": {
+        "corpus": "",
+        "validation": "",
+        "data_source": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "annotator": {},
+        "curator": {
+          "email": "",
+          "name": ""
+        },
+        "version": ""
+      },
+      "time": 0,
+      "sandbox": {
+        "scaper": {
+          "reverb": 0.1,
+          "polyphony_gini": 0.55952710254715,
+          "bg_spec": [
+            [
+              [
+                "const",
+                "noise"
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                10.0
+              ],
+              [
+                "const",
+                0
+              ],
+              "background",
+              null,
+              null
+            ]
+          ],
+          "allow_repeated_label": true,
+          "fg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/",
+          "protected_labels": [],
+          "bg_labels": [
+            "noise"
+          ],
+          "ref_db": -50,
+          "n_channels": 1,
+          "fade_in_len": 0.01,
+          "allow_repeated_source": false,
+          "n_events": 4,
+          "fade_out_len": 0.01,
+          "fg_labels": [
+            "engine_idling",
+            "children_playing",
+            "street_music",
+            "dog_bark",
+            "gun_shot",
+            "car_horn",
+            "siren",
+            "air_conditioner",
+            "jackhammer",
+            "drilling"
+          ],
+          "duration": 10.0,
+          "bg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/background/",
+          "polyphony_max": 2,
+          "fg_spec": [
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                3.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                7.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                3.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "truncnorm",
+                7.0,
+                2.0,
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ]
+          ]
+        }
+      },
+      "duration": 10.0
+    }
+  ],
+  "sandbox": {}
+}

@@ -1,0 +1,339 @@
+{
+  "sandbox": {},
+  "file_metadata": {
+    "artist": "",
+    "jams_version": "0.2.2",
+    "identifiers": {},
+    "release": "",
+    "title": "",
+    "duration": 10.0
+  },
+  "annotations": [
+    {
+      "annotation_metadata": {
+        "annotation_rules": "",
+        "annotator": {},
+        "annotation_tools": "",
+        "corpus": "",
+        "version": "",
+        "validation": "",
+        "curator": {
+          "email": "",
+          "name": ""
+        },
+        "data_source": ""
+      },
+      "namespace": "sound_event",
+      "time": 0,
+      "sandbox": {
+        "scaper": {
+          "fade_out_len": 0.01,
+          "bg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/background/",
+          "ref_db": -50,
+          "bg_labels": [
+            "noise"
+          ],
+          "allow_repeated_source": false,
+          "n_channels": 1,
+          "duration": 10.0,
+          "bg_spec": [
+            [
+              [
+                "const",
+                "noise"
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                0
+              ],
+              [
+                "const",
+                10.0
+              ],
+              [
+                "const",
+                0
+              ],
+              "background",
+              null,
+              null
+            ]
+          ],
+          "n_events": 4,
+          "protected_labels": [],
+          "polyphony_gini": 0.5584341740621321,
+          "fade_in_len": 0.01,
+          "fg_spec": [
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ],
+            [
+              [
+                "choose",
+                []
+              ],
+              [
+                "choose",
+                []
+              ],
+              [
+                "const",
+                0.0
+              ],
+              [
+                "uniform",
+                0.0,
+                10.0
+              ],
+              [
+                "uniform",
+                0.5,
+                4.0
+              ],
+              [
+                "uniform",
+                6,
+                30
+              ],
+              "foreground",
+              [
+                "uniform",
+                -3.0,
+                3.0
+              ],
+              [
+                "uniform",
+                0.8,
+                1.2
+              ]
+            ]
+          ],
+          "allow_repeated_label": true,
+          "reverb": 0.1,
+          "fg_labels": [
+            "engine_idling",
+            "children_playing",
+            "street_music",
+            "dog_bark",
+            "gun_shot",
+            "car_horn",
+            "siren",
+            "air_conditioner",
+            "jackhammer",
+            "drilling"
+          ],
+          "polyphony_max": 3,
+          "fg_path": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/"
+        }
+      },
+      "duration": 10.0,
+      "data": [
+        {
+          "time": 0.0,
+          "value": {
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/background/noise/brownian.wav",
+            "pitch_shift": null,
+            "event_time": 0,
+            "snr": 0,
+            "time_stretch": null,
+            "role": "background",
+            "event_duration": 10.0,
+            "source_time": 0,
+            "label": "noise"
+          },
+          "duration": 10.0,
+          "confidence": 1.0
+        },
+        {
+          "time": 0.972276,
+          "value": {
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/siren/93567-8-0-10.wav",
+            "pitch_shift": -0.23579491127258834,
+            "event_time": 0.9722763725673911,
+            "snr": 26.632021343897303,
+            "time_stretch": 1.1672277146510361,
+            "role": "foreground",
+            "event_duration": 3.674000794152314,
+            "source_time": 0.0,
+            "label": "siren"
+          },
+          "duration": 4.2883960000000005,
+          "confidence": 1.0
+        },
+        {
+          "time": 4.342027,
+          "value": {
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/jackhammer/105029-7-2-10.wav",
+            "pitch_shift": 2.9969676549015576,
+            "event_time": 4.342026805706184,
+            "snr": 11.38615050523805,
+            "time_stretch": 1.1677011942773774,
+            "role": "foreground",
+            "event_duration": 2.9690494564538286,
+            "source_time": 0.0,
+            "label": "jackhammer"
+          },
+          "duration": 3.4669630000000002,
+          "confidence": 1.0
+        },
+        {
+          "time": 7.047784,
+          "value": {
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/car_horn/54086-1-1-0.wav",
+            "pitch_shift": 0.7483121096975616,
+            "event_time": 7.047783501377904,
+            "snr": 26.498170503927046,
+            "time_stretch": 0.872134192927571,
+            "role": "foreground",
+            "event_duration": 1.2,
+            "source_time": 0.0,
+            "label": "car_horn"
+          },
+          "duration": 1.046561,
+          "confidence": 1.0
+        },
+        {
+          "time": 3.389524,
+          "value": {
+            "source_file": "/scratch/js7561/datasets/scaper_waspaa2017/audio/soundbanks/test/foreground/siren/159745-8-1-3.wav",
+            "pitch_shift": -2.5758273403381864,
+            "event_time": 3.3895242531430303,
+            "snr": 10.378627808821943,
+            "time_stretch": 1.0538923451030497,
+            "role": "foreground",
+            "event_duration": 3.8876780695653457,
+            "source_time": 0.0,
+            "label": "siren"
+          },
+          "duration": 4.097194,
+          "confidence": 1.0
+        }
+      ]
+    }
+  ]
+}
