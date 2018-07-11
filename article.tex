@@ -62,28 +62,107 @@ quantitatively with precision-recall metrics obtained by comparing the
 instrument prediction from a segment of audio to the ground truth obtained
 from musical scores, and qualitatively by generating samples of audio for given
 regions in the latent space.}
-\section{Problem Outline}
+\section{Methodology Outline}
 \subsection{Mapping time-series to latent space}
 The input data are single channel time-series points $\mathcal{D}=\{x(t_1)\dots
 x(t_N)\}$ sampled at frequency $f$ from an underlying continuous state-time
 process $x(t)$, that is the oscillating sound waves emitted by a live orchestra.
+\subsubsection{Wavelet transforms and independent components}
+\begin{enumerate}
+	\item get spectrogram using windowed fourier transform or gabor transforms,
+	discuss spectral leakage, contrast, normalisation and noise filtering in an
+	unsupervised way
+	\item perform principal components and independent component dimensionality
+	reduction along frequency dimension, discuss differences between them.
+\end{enumerate}
+\subsubsection{Markov models and expecation maximisation}
+\begin{enumerate}
+	\item discuss implementations of random markov fields in image segmentation
+	and how they can be adapted to audio segmentation
+	\item random markov field vs hidden markov model?
+	\item expectation maximisation vs error backpropagation
+\end{enumerate}
+\subsubsection{Feature extraction with causal convolutions}
+Convolutional architectures have become popular due to their ability to compress spatio-temporal
+information for discrimination and generation tasks \cite{Oord2016a,Goodfellow}.
+A causal convolutional network \cite{Oord2016} --- which encodes the arrow of time in
+its architecture --- is trained for the audio segmentation task.
+\begin{enumerate}
+	\item dilated causal convolutions as a merge between a feature
+	extractor and a dimensionality reduction technique. This is a supervised method
+	\item Compare clusters to those obtained in Section 1.1.1
+\end{enumerate}
+\subsection{Clustering in latent space}
+\begin{enumerate}
+	\item We have a heirarchical clustering problem: there are 11 instruments each
+	of which can play 28-83 notes. The easier problem is to only cluster instruments,
+	the harder problem is to cluster both instruments and notes.
+\end{enumerate}
+
+\subsubsection{K-means}
+
+\begin{enumerate}
+	\item Since we know how many instruments there are, we can apply a naive K-means
+	and see what happens. Here the disadvantage is that time-ordering may be
+	ignored, which can lead to noisy/discontinous audio segment classifications
+	\item Discuss de-noising strategies in post-classification: possibly markov
+	random fields from section 1.1.2?
+\end{enumerate}
+
+\subsubsection{Fully convolutional networks}
+\begin{enumerate}
+	\item I shall attempt to adapt the the fully convolutional archetcture \cite{Long2015}
+	for the audio segmentation task. Discuss advantages of end-to-end trained solution.
+\end{enumerate}
+
+\subsection{Evaluation methods}
+\subsubsection{Audio segment retrieval}
+\begin{enumerate}
+	\item outline of object detection / segmentation in image analysis
+	\item precision-recall metric applied to audio
+\end{enumerate}
+\subsubsection{Instrument generation}
+\begin{enumerate}
+	\item introduction to encoder / decoder piplines as generative models which
+	can produce data given activation of input in latent space.
+	\item attempt to produce sounds that are interpolations between
+	existing instruments, assess qualitatively how realistic they sound
+\end{enumerate}
+
 
 \begin{figure}[H]
 \centering{}
 \captionsetup{justification=centering}
-\includegraphics[scale=0.35]{methods}
+\includegraphics[scale=0.5]{methods}
+\caption{Summary of methodology showing all stages of the audio segmentation task.\\
+Each transition between subfigures can be acheived with appropriate algorithms
+}
 \label{fig:methods}
 \end{figure}
 
-\section{Clustering in spectral sub-spaces} \vspace{-10pt}
+\section{Dataset Description}
 
-\section{Hidden Markov models} \vspace{-10pt}
-\section{Causal convolutional networks}
-Convolutional architectures have become popular due to their ability to compress spatio-temporal
-information for discrimination and generation tasks \cite{Oord2016PixelNetworks,GoodfellowGenerativeNets}.
-A causal convolutional network \cite{Oord2016WaveNet:Audio} --- which encodes the arrow of time in
-its architecture --- is trained for the audio segmentation task.
+\subsection{Input and Labels}
+\begin{enumerate}
+	\item small summary table of the MusicNet dataset \cite{Thickstun2016}, advantages
+	over EEG and other biosensory data for benchmarking signal processing algorithms
+	\item raw labels are time aligned transcipts of the sheet music. How to we
+	parse that into instrument activations and note activations.
+	\item cross-validation --- if any
+\end{enumerate}
 
+\subsection{Data Partitioning}
+\begin{enumerate}
+	\item test, validation and train sets
+	\item cross-validation --- if any
+\end{enumerate}
+
+\section{Results, Protocols and Conclusions}
+\subsection{Learned feature maps}
+
+\subsection{Clustering performance}
+
+\subsection{Generating instruments}
 
 \bibliography{mendeley_v2}
 \bibliographystyle{ieeetr}
