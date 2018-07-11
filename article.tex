@@ -42,7 +42,7 @@
 \begin{document}
 
 \title{
-Sound detection
+Time-series segmentation and latent\\ representation of musical instruments
 }
 
 \author{Gregory Szep}
@@ -50,8 +50,25 @@ Sound detection
 \date{\today}
 \maketitle
 
-\abstract{The}
-\section{Phase Space Density} \vspace{-10pt}
+\abstract{Music information retrieval tasks serve as faithful benchmarks for time-series
+analysis pipelines due to the availability of strongly labelled training data such as MusicNet.
+Clustering algorithms in spectral sub-spaces, hidden Markov models and causal convolutional neural
+networks are compared in their ability determine a continuous latent space that linearly separates
+eleven orchestral instruments. The latent space is evaluated quantitatively with precision-recall
+metrics obtained by comparing the instrument class prediction from a segment of audio to the ground truth,
+and qualitatively by generating samples of audio for given regions in the latent space.}
+
+\section{Music Information Retrieval} \vspace{-10pt}
+
+\section{Clustering in spectral sub-spaces} \vspace{-10pt}
+
+\section{Hidden Markov models} \vspace{-10pt}
+\section{Causal convolutional networks}
+Convolutional architectures have become popular due to their ability to compress spatio-temporal
+information for discrimination and generation tasks \cite{Oord2016PixelNetworks,GoodfellowGenerativeNets}.
+A causal convolutional network \cite{Oord2016WaveNet:Audio} --- which encodes the arrow of time in
+its architecture --- is trained for the audio segmentation task.
+
 
 \bibliography{mendeley_v2}
 \bibliographystyle{ieeetr}
