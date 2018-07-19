@@ -1,16 +1,19 @@
 \documentclass{article}[12pt]
-\renewcommand{\baselinestretch}{1.5}
-\setlength{\parskip}{1em}
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0pt}
 
-\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.5}
+
 \usepackage[affil-it]{authblk}
 \usepackage[space]{grffile}
 
 \usepackage[a4paper]{geometry}
 \geometry{verbose}
+
 \usepackage{float}
 \usepackage{graphicx}
 \graphicspath{{figures/}}
+
 \usepackage{setspace}
 \usepackage{caption}
 
@@ -33,7 +36,6 @@
 \setlist{leftmargin=*,before=\setlength{\rightmargin}{\leftmargin}}
 %-figure layout options
 
-
 \providecommand\citet{\cite}
 \providecommand\citep{\cite}
 \providecommand\citealt{\cite}
@@ -51,8 +53,10 @@ Time-series segmentation and latent\\ representation of musical instruments
 \affil{King's College London}
 \date{\today}
 \maketitle
-
-\abstract{Music information retrieval tasks serve as faithful benchmarks for
+\vspace{-3em}
+\abstract{
+\noindent
+Music information retrieval tasks serve as faithful benchmarks for
 time-series analysis pipelines due to the availability of strongly labelled
 training data such as MusicNet. Clustering algorithms in spectral sub-spaces,
 hidden Markov models and causal convolutional neural networks are compared in
@@ -62,11 +66,25 @@ quantitatively with precision-recall metrics obtained by comparing the
 instrument prediction from a segment of audio to the ground truth obtained
 from musical scores, and qualitatively by generating samples of audio for given
 regions in the latent space.}
+
 \section{Methodology Outline}
 \subsection{Mapping time-series to latent space}
 The input data are single channel time-series points $\mathcal{D}=\{x(t_1)\dots
 x(t_N)\}$ sampled at frequency $f$ from an underlying continuous state-time
 process $x(t)$, that is the oscillating sound waves emitted by a live orchestra.
+\\\\
+For each time point there is a musical score $\bar{\mathrm{L}}(t)\in[0,1]^L$ which
+represents the activation of a particular note on a particular instrument. These scores
+can be divided into two subsets: instrument activations $\bar{\mathrm{y}}(t)\in[0,1]^Y$ and note activations $\bar{\mathrm{n}}(t)\in[0,1]^N$.
+\\\\
+The task is to recover activations $\bar{\mathrm{y}}(t),\bar{\mathrm{n}}(t)$ from
+the input signal $x(t)$. Within unsupervised methods this task is known as
+under-determined blind source separation. When the number of input channels
+equals to the number of sources this problem is fully determined and can be
+solved exactly using independent component analysis \cite{Platt1995Information-MaximizationDeconvolution}.
+
+The principal assumption in this task is that t 
+
 \subsubsection{Wavelet transforms and independent components}
 \begin{enumerate}
 	\item get spectrogram using windowed Fourier transform or Gabor transforms,
@@ -84,8 +102,8 @@ process $x(t)$, that is the oscillating sound waves emitted by a live orchestra.
 \end{enumerate}
 \subsubsection{Feature extraction with causal convolutions}
 Convolutional architectures have become popular due to their ability to compress spatio-temporal
-information for discrimination and generation tasks \cite{Oord2016PixelNetworks,GoodfellowGenerativeNets}.
-A causal convolutional network \cite{Oord2016WaveNet:Audio} --- which encodes the arrow of time in
+information for discrimination and generation tasks \cite{Oord2016a,Goodfellow}.
+A causal convolutional network \cite{Oord2016} --- which encodes the arrow of time in
 its architecture --- is trained for the audio segmentation task.
 \begin{enumerate}
 	\item dilated causal convolutions as a merge between a feature
@@ -144,7 +162,7 @@ Each transition between sub-figures can be achieved with appropriate algorithms
 
 \subsection{Input and Labels}
 \begin{enumerate}
-	\item small summary table of the MusicNet dataset \cite{Thickstun2016LearningScratch}, advantages
+	\item small summary table of the MusicNet dataset \cite{Thickstun2016}, advantages
 	over EEG and other bio-sensory data for bench-marking signal processing algorithms
 	\item raw labels are time aligned transcripts of the sheet music. How to we
 	parse that into instrument activations and note activations.
@@ -160,7 +178,6 @@ Each transition between sub-figures can be achieved with appropriate algorithms
 \section{Results, Protocols and Conclusions}
 \begin{enumerate}
 	\item all relevant figures will be presented here
-	\item all code will be documented on GitHub repo [https://github.com/gszep/sound-detection]
 \end{enumerate}
 \subsection{Learned feature maps}
 
