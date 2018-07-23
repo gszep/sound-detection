@@ -14,6 +14,7 @@
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 
+
 \usepackage{setspace}
 \usepackage{caption}
 
@@ -75,15 +76,37 @@ process $x(t)$, that is the oscillating sound waves emitted by a live orchestra.
 \\\\
 For each time point there is a musical score $\bar{\mathrm{L}}(t)\in[0,1]^L$ which
 represents the activation of a particular note on a particular instrument. These scores
-can be divided into two subsets: instrument activations $\bar{\mathrm{y}}(t)\in[0,1]^Y$ and note activations $\bar{\mathrm{n}}(t)\in[0,1]^N$.
+are composed by $Y$ instrument activations $\bar{\mathrm{y}}(t)\in[0,1]^Y$ and $N$
+note activations $\bar{\mathrm{n}}(t)\in[0,1]^N$.
 \\\\
-The task is to recover activations $\bar{\mathrm{y}}(t),\bar{\mathrm{n}}(t)$ from
+The task is to recover instrument activations $\bar{\mathrm{y}}(t)$ from
 the input signal $x(t)$. Within unsupervised methods this task is known as
 under-determined blind source separation. When the number of input channels
 equals to the number of sources this problem is fully determined and can be
-solved exactly using independent component analysis \cite{Platt1995Information-MaximizationDeconvolution}.
-
-The principal assumption in this task is that t 
+solved using independent component analysis
+\cite{Platt1995Information-MaximizationDeconvolution} and other algorithms
+that search for sparse representations. Through the lens of supervised approaches
+this problem can be seen as an audio segmentation task. In recent years
+convolutional networks have demonstrated success in image segmentation \cite{},
+whos architectures are adaptable to audio data.
+\\\\
+The principal assumption in this task is that $x(t)$ is a linear superposition
+of sources and that in some latent space $\bar{\mathrm{z}}(t)$ these sources are
+linearly separable. The optimal latent space mapping $f$ should minimise the
+cost function $J[f]$, which in general is some norm $\left\lVert\,\right\rVert$
+of the error subject to some complexity measure $S[f]$. The data in the latent
+space should be separable by a suitable choice of unmixing matrix $\mathbf{W}$.
+\begin{align}
+	J[f]=\left\lVert\bar{\mathrm{y}}(t)-\mathbf{W}\,\bar{\mathrm{z}}(t)\right\rVert+S[f]
+	\quad\text{where}\quad
+	\bar{\mathrm{z}}(t) = f(x,t)\\
+	\exists\,\mathbf{W},f\,:\,f=\underset{f'}{\mathrm{argmin}}\,J[f']
+	\qquad\qquad\qquad
+\end{align}
+Note that the map $f$ is most likely not one-to-one respect to $t$. It is not a
+single time point but a time window that encodes which instrument is being
+played. While linear separability via $\mathbf{W}$ by is sufficient it is not
+necessary; one could instead simply look for clusters.
 
 \subsubsection{Wavelet transforms and independent components}
 \begin{enumerate}
