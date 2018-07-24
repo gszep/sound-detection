@@ -14,7 +14,6 @@
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 
-
 \usepackage{setspace}
 \usepackage{caption}
 
@@ -109,6 +108,22 @@ played. While linear separability via $\mathbf{W}$ by is sufficient it is not
 necessary; one could instead simply look for clusters.
 
 \subsubsection{Wavelet transforms and independent components}
+The naive approach would be to attempt to guess the mapping $f$ via suitable
+phenomenological agruments. It is reasonable to suppose that one could separate
+instruments based on the distribution of frequencies $\omega$ present, and thus
+we choose $f$ to be a short-time fourier transform, where the
+$\omega^\mathrm{th}$ component of the output represents the amplitude of
+frequency $\omega$ at time $t$.
+\begin{align}
+	f(x,t)_\omega=
+	\int_{-\infty}^{\infty}\!
+		x(\tau)\mathbb{e}^{-\mathbb{i}\omega \tau}h(\tau-t)
+	\,\mathrm{d}\tau
+\end{align}
+A suitable window function $h(t)$ must be chosen; different choices lead to
+different amounts of spectral leakage and time-frequency domain resolution \cite{}.
+For demonstration purposes a ~1/3s wide square window is chosen, which is on the
+order of the shortest duration of a musical sound.
 \begin{enumerate}
 	\item get spectrogram using windowed Fourier transform or Gabor transforms,
 	discuss spectral leakage, contrast, normalisation and noise filtering in an

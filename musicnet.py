@@ -1,24 +1,17 @@
-from __future__ import print_function
-from subprocess import call
 from mmap import mmap,MAP_SHARED,PROT_READ
+from numpy import array,uint8,frombuffer,float32
+from numpy.random import choice,randint
+from numpy.linalg import norm
+from sparse import load_npz
 
-
-import os.path
-import pickle
-import errno
-import csv
-import numpy as np
-import torch
-
-from numpy import array,uint8
-from numpy.random import choice
 import os
 from os import listdir
 from os.path import join
+
+from progress.bar import Bar
 from gc import collect
 
-sz_float = 4    # size of a float32
-sz_int = 1    # size of int8
+sz_float = 4 # float32 in bytes
 epsilon = 10e-8 # fudge factor for normalization
 
 # subclass of torch data
@@ -30,20 +23,21 @@ class MusicNet(Dataset):
 
     Paramters
     ---------
-        train (bool, optional): If True, creates dataset from ``train_data``,
-            otherwise from ``test_data``.
-        normalize (bool, optional): If true, rescale input vectors to unit norm.
-        window (int, optional): Size in samples of a data point.
-        epoch_size (int, optional): Designated Number of samples for an "epoch"
+        dataset : 'train' | 'test'
+            partition to load
+        window : int
+            window size in seconds of a given (data,label) pair
+        epoch_size : int
+            number of datum pairs per epoch
     """
 
-    def __init__(self, dataset='train', normalize=True, window=16384, epoch_size=100000):
+    def __init__(self, dataset='test', window=5, epoch_size=100000):
 
         self.root = '/datadrive/musicnet'
-        self.normalize = normalize
-        self.window = window
+        self.sample_frequency = 44100
+
+        self.window = window*self.sample_frequency
         self.size = epoch_size
-        self.m = 128
 
         # setting paths to labels and data
         assert dataset in ['train','test'], "dataset must be 'train' or 'test'"
@@ -53,35 +47,43 @@ class MusicNet(Dataset):
         self.labels_path = join(self.root,dataset,'labels')
 
         # initialising empty dataset
-        with open(join(self.labels_path,'tree.pckl'),'r') as file:
-            self.labeltree = pickle.load(file)
-            self.ids = self.labeltree.keys()
-
-        self.open_files = []
         self.records = dict()
+        self.ids = []
+        self.open_files = []
 
     def __enter__(self):
         """Load dataset upon entering with <MusicNet>: statement"""
-        for record in listdir(self.data_path):
+        records = listdir(self.data_path)
+        bar = Bar('Loading database', max=len(records))
+
+        for record in records:
             if not record.endswith('.npy'): continue
 
-            fd = os.open(os.path.join(self.data_path, record), os.O_RDONLY)
-            buff = mmap(fd, 0, MAP_SHARED, PROT_READ)
+            id = int(record[:-4])
+            self.ids += [id]
 
-            self.records[int(record[:-4])] = (buff, len(buff)/sz_float)
-            self.open_files.append(fd)
+            file_pointer = os.open(join(self.data_path,record), os.O_RDONLY)
+            buffer = mmap(file_pointer, 0, MAP_SHARED, PROT_READ)
+            labels = load_npz(join(self.labels_path,str(id)+'.npz'))
+
+            self.records[id] = buffer, labels, len(buffer)/sz_float
+            self.open_files.append(file_pointer)
+            bar.next()
+
+        bar.finish()
+        return self
 
     def __exit__(self, *args):
         """Clear memory upon exit of with <MusicNet>: statement"""
 
-        for mm in self.records.values():
-            mm[0].close()
+        for buffer,labels,size in self.records.values():
+            buffer.close()
 
-        for fd in self.open_files:
-            os.close(fd)
+        for file_pointer in self.open_files:
+            os.close(file_pointer)
 
-        self.open_files = []
         self.records = dict()
+        self.open_files = []
         collect()
 
     def access(self,id,s):
@@ -93,20 +95,13 @@ class MusicNet(Dataset):
             tuple: (audio, target) where target is a binary vector indicating notes on at the center of the audio.
         """
 
-        x = np.frombuffer(self.records[id][0][s*sz_float:int(s+self.window)*sz_float], dtype=np.float32).copy()
-        if self.normalize: x /= np.linalg.norm(x) + epsilon
+        buffer,labels,size = self.records[id]
 
-        y = np.zeros((self.window,128,11),dtype=np.float32)
-        for t in xrange(self.window):
+        data = frombuffer(buffer[s*sz_float:int(s+self.window)*sz_float], dtype=float32).copy()
+        label = labels[s:s+self.window]
 
-            for label in self.labeltree[id][s+t]:
-                inst,note,_,_,_ = label.data
-
-                if inst != 0:
-                    label_index = list(self.labels==inst).index(True)
-                    y[t,note,label_index] = 1.0
-
-        return x,y
+        data /= norm(data) + epsilon
+        return data,label
 
     def __getitem__(self, index):
         """
@@ -114,8 +109,10 @@ class MusicNet(Dataset):
         """
 
         id = choice(self.ids)
-        s = np.random.randint(0,self.records[id][1]-self.window)
-        return self.access(id,s)
+        buffer,labels,size = self.records[id]
+
+        t = randint(0,size-self.window)
+        return self.access(id,t)
 
     def __len__(self):
         return self.size
