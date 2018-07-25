@@ -1,15 +1,9 @@
-import sys,os,signal
-import os.path
-import pickle
-import re
-
-
-import numpy as np
 from numpy import *
 import musicnet
 
-from scipy.io import wavfile
-from sparse import COO,save_npz
+from scipy.sparse import lil_matrix,save_npz
+import pickle
+import re
 
 from os.path import join
 from glob import glob
@@ -25,59 +19,50 @@ def batch(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-@profile
-def processdata(id_batch):
-    datalabels=array([ 1, 7, 41, 42, 43, 44, 61, 69, 71, 72, 74], dtype=uint8)
-    id,size,labeltree = id_batch
 
-    print '###############################',id
-    bar = Bar('Processing', max=size)
-    y = np.zeros((size,128,11),dtype=np.uint8)
+def processdata(id):
+    dset = 'test'
+    datalabels=array([ 1, 7, 41, 42, 43, 44, 61, 69, 71, 72, 74], dtype=uint8)
+
+    with open('/datadrive/musicnet/'+dset+'/data/'+str(id)+'.npy','r') as file:
+        size = int(re.search("(?<=shape': \()([0-9]+)",file.readline()).group(0))
+
+    with open('/datadrive/musicnet/'+dset+'/labels/'+str(id)+'.pckl','r') as file:
+        labeltree = pickle.load(file)
+
+    bar = Bar('Processing '+str(id), max=size)
+    y = lil_matrix((size,11),dtype=uint8)
 
     for t in xrange(size):
 
         for label in labeltree[t]:
-            inst,note,_,_,_ = label.data
 
-            if inst != 0:
-                label_index = list(datalabels==inst).index(True)
-                y[t,note,label_index] = 1
+            inst,note,_,_,_ = label.data
+            label_index = list(datalabels==inst).index(True)
+            if inst != 0: y[t,label_index] = note
 
         bar.next()
-    bar.finish()
-    save_npz(os.path.join('/datadrive/musicnet/train/labels',str(id)),COO.from_numpy(y))
 
+    bar.finish()
+    print 'Saving',id,'...'
+    save_npz(join('/datadrive/musicnet/'+dset+'/labels',str(id)),y.tocsr())
     print id,'Saved!'
     del y
     collect()
 
-# initialising empty dataset
-with open('/datadrive/musicnet/train/labels/tree.pckl','r') as file:
-    print 'loading tree...'
-    labeltree = pickle.load(file)
-    ids = labeltree.keys()
-    print 'Done!'
+dset = 'test'
+def main():
 
-records = len(ids)*[None]
-i = 0
-for id in ids:
-    with open('/datadrive/musicnet/train/data/'+str(id)+'.npy') as file:
-        size = int(re.search("(?<=shape': \()([0-9]+)",file.readline()).group(0))
-    records[i] = (int(id),int(size),labeltree[id].copy())
-    print i,id,size
-    i += 1
+    ids = [ int(x[-8:-4]) for x in glob('/datadrive/musicnet/'+dset+'/data/*.npy')]
+    saved = [ int(x[-8:-4]) for x in glob('/datadrive/musicnet/'+dset+'/labels/*.npz')]
 
-del labeltree,ids
-collect()
-#pool = Pool(cpu_count())
-print 'Done!'
+    pool = Pool(cpu_count())
+    for id in ids :
+        if id not in saved :
+            pool.apply_async(processdata, args=(id,))
 
-batch_size = len(records)/(10*cpu_count())+1
-#for id_batch in records :
+    # wait for threads to finish
+    pool.close()
+    pool.join()
 
-processdata(records[0])
-    #pool.apply_async(processdata, args=(id_batch,))
-
-# # wait for threads to finish
-# pool.close()
-# pool.join()
+main()

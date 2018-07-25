@@ -23,7 +23,12 @@ def standardise(x,axis=None) :
     ---------
     """
     epsilon = 10e-8
-    return (x-mean(x,axis=axis))/(std(x,axis=axis)+epsilon)
+    if axis == 0 :
+        return (x-mean(x,axis=axis))/(std(x,axis=axis)+epsilon)
+    if axis == 1 :
+        return ((x.T-mean(x,axis=axis))/(std(x,axis=axis)+epsilon)).T
+    else :
+        NotImplemented('only axis=0 or axis=1 work for now')
 
 
 def gaussian(x,mean=0.0,std=1.0) :
@@ -50,7 +55,7 @@ def gaussian(x,mean=0.0,std=1.0) :
     return exp(-((x-mean)/std)**2) / sqrt(2*pi*std**2)
 
 
-def stft(signal,time,freq_cutoff=1e3,n_freq=500) :
+def stft(signal,time,window=0.1) :
     """
     Perform a shoft-time fourier transform with a window function
     given by the default parameters specified in MusicNet
@@ -80,12 +85,15 @@ def stft(signal,time,freq_cutoff=1e3,n_freq=500) :
     dt = mean(gradient(time))
     f_nyquist = 0.5/dt
 
-    freq = linspace(0,freq_cutoff,int(n_freq))
+    # logarithmic binning
+    notes = linspace(0,108,108*4)
+    freq = 2**((notes-69)/12.0)*440.0
+
     assert amax(freq) <= f_nyquist,'maximal frequency {}Hz must be less than nyquist {}Hz'.format(
         amax(freq),f_nyquist)
 
     # construct window function
-    window = array(2048*[1])
+    window = array(int(44100*window)*[1])
 
     # multithreaded batched fftconvolve
     pool = Pool(cpu_count())

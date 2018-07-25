@@ -73,8 +73,8 @@ The input data are single channel time-series points $\mathcal{D}=\{x(t_1)\dots
 x(t_N)\}$ sampled at frequency $f$ from an underlying continuous state-time
 process $x(t)$, that is the oscillating sound waves emitted by a live orchestra.
 \\\\
-For each time point there is a musical score $\bar{\mathrm{L}}(t)\in[0,1]^L$ which
-represents the activation of a particular note on a particular instrument. These scores
+For each time point there is a musical score $\bar{\mathrm{L}}(t)\in[0,128]^L$ which
+represents the midi notes played by $L$ instruments of a particular note on a particular instrument. These scores
 are composed by $Y$ instrument activations $\bar{\mathrm{y}}(t)\in[0,1]^Y$ and $N$
 note activations $\bar{\mathrm{n}}(t)\in[0,1]^N$.
 \\\\
@@ -110,20 +110,28 @@ necessary; one could instead simply look for clusters.
 \subsubsection{Wavelet transforms and independent components}
 The naive approach would be to attempt to guess the mapping $f$ via suitable
 phenomenological agruments. It is reasonable to suppose that one could separate
-instruments based on the distribution of frequencies $\omega$ present, and thus
-we choose $f$ to be a short-time fourier transform, where the
-$\omega^\mathrm{th}$ component of the output represents the amplitude of
-frequency $\omega$ at time $t$.
+instruments based on their spectral signature at any moment in time. The decibel
+spectrogram $S(\omega,t)$ is obtained by taking the $\log_{10}$ absolute value
+of a short-time fourier transform.
 \begin{align}
-	f(x,t)_\omega=
+	\omega(n)=2^{\frac{n-69}{12}}\,440.0\mathrm{Hz}
+\end{align}
+\begin{align}
+	S(\omega,t):=\log_{10}\left[\left|\,
 	\int_{-\infty}^{\infty}\!
 		x(\tau)\mathbb{e}^{-\mathbb{i}\omega \tau}h(\tau-t)
 	\,\mathrm{d}\tau
+	\,\right|\right]
 \end{align}
 A suitable window function $h(t)$ must be chosen; different choices lead to
 different amounts of spectral leakage and time-frequency domain resolution \cite{}.
-For demonstration purposes a ~1/3s wide square window is chosen, which is on the
+For demonstration purposes a ~100ms wide square window is chosen, which is on the
 order of the shortest duration of a musical sound.
+
+The spectral signature of the input signal at a given time $t$ can be
+represented as a point in $F$ dimensional point, where $F$ is the number
+of frequency bins up to a given cutoff frequency. $F=500$
+
 \begin{enumerate}
 	\item get spectrogram using windowed Fourier transform or Gabor transforms,
 	discuss spectral leakage, contrast, normalisation and noise filtering in an

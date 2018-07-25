@@ -2,7 +2,7 @@ from mmap import mmap,MAP_SHARED,PROT_READ
 from numpy import array,uint8,frombuffer,float32
 from numpy.random import choice,randint
 from numpy.linalg import norm
-from sparse import load_npz
+from scipy.sparse import load_npz
 
 import os
 from os import listdir
@@ -31,12 +31,12 @@ class MusicNet(Dataset):
             number of datum pairs per epoch
     """
 
-    def __init__(self, dataset='test', window=5, epoch_size=100000):
+    def __init__(self, dataset='test', window=None, epoch_size=100000):
 
         self.root = '/datadrive/musicnet'
         self.sample_frequency = 44100
 
-        self.window = window*self.sample_frequency
+        self.window = window*self.sample_frequency if window is not None else None
         self.size = epoch_size
 
         # setting paths to labels and data
@@ -48,6 +48,8 @@ class MusicNet(Dataset):
 
         # initialising empty dataset
         self.records = dict()
+        self.labels = dict()
+
         self.ids = []
         self.open_files = []
 
@@ -64,9 +66,11 @@ class MusicNet(Dataset):
 
             file_pointer = os.open(join(self.data_path,record), os.O_RDONLY)
             buffer = mmap(file_pointer, 0, MAP_SHARED, PROT_READ)
-            labels = load_npz(join(self.labels_path,str(id)+'.npz'))
 
-            self.records[id] = buffer, labels, len(buffer)/sz_float
+            with open(join(self.labels_path,str(id)+'.pckl'),'r') as file:
+                self.labels[id] = pickle.load(file)
+
+            self.records[id] = buffer, len(buffer)/sz_float
             self.open_files.append(file_pointer)
             bar.next()
 
@@ -83,6 +87,8 @@ class MusicNet(Dataset):
             os.close(file_pointer)
 
         self.records = dict()
+        self.labels = dict()
+
         self.open_files = []
         collect()
 
@@ -95,13 +101,20 @@ class MusicNet(Dataset):
             tuple: (audio, target) where target is a binary vector indicating notes on at the center of the audio.
         """
 
-        buffer,labels,size = self.records[id]
+        buffer,size = self.records[id]
+        data = frombuffer(buffer[s*sz_float:(s+self.window)*sz_float], dtype=float32).copy()
 
-        data = frombuffer(buffer[s*sz_float:int(s+self.window)*sz_float], dtype=float32).copy()
-        label = labels[s:s+self.window]
+        segments = lil_matrix((self.window,11,10),dtype=float32)
+        for t in xrange(self.window):
+
+            for inst,note,_,_,_ in self.labels[id][s+t].data :
+                label_index = list(datalabels==inst).index(True)
+
+                if inst != 0:
+                    y[t,label_index,] = note
 
         data /= norm(data) + epsilon
-        return data,label
+        return data,segments
 
     def __getitem__(self, index):
         """
@@ -109,7 +122,7 @@ class MusicNet(Dataset):
         """
 
         id = choice(self.ids)
-        buffer,labels,size = self.records[id]
+        buffer,size = self.records[id]
 
         t = randint(0,size-self.window)
         return self.access(id,t)
