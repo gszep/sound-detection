@@ -1,9 +1,9 @@
 from numpy import *
 import musicnet
 
-from scipy.sparse import lil_matrix,save_npz
-import pickle
-import re
+from scipy.sparse import lil_matrix
+import h5py
+import h5sparse
 
 from os.path import join
 from glob import glob
@@ -21,48 +21,45 @@ def batch(l, n):
 
 
 def processdata(id):
-    dset = 'test'
     datalabels=array([ 1, 7, 41, 42, 43, 44, 61, 69, 71, 72, 74], dtype=uint8)
+    with h5py.File('/datadrive/musicnet.h5','r') as file:
 
-    with open('/datadrive/musicnet/'+dset+'/data/'+str(id)+'.npy','r') as file:
-        size = int(re.search("(?<=shape': \()([0-9]+)",file.readline()).group(0))
+        with h5sparse.File('/datadrive/labels.h5') as sparse:
+            doit = join('sparse','matrix',id) not in sparse
 
-    with open('/datadrive/musicnet/'+dset+'/labels/'+str(id)+'.pckl','r') as file:
-        labeltree = pickle.load(file)
+        if doit :
 
-    bar = Bar('Processing '+str(id), max=size)
-    y = lil_matrix((size,11),dtype=uint8)
+            size = len(file[id]['data'])
+            bar = Bar('Processing '+str(id), max=len(file[id]['labels']))
 
-    for t in xrange(size):
+            segments = lil_matrix((size,11),dtype=uint8)
+            for _,end_time,instrument,_,note,_,start_time in file[id]['labels']:
+                label_index = list(datalabels==instrument).index(True)
 
-        for label in labeltree[t]:
+                for t in range(start_time,end_time) :
+                    segments[t,label_index] = 1
 
-            inst,note,_,_,_ = label.data
-            label_index = list(datalabels==inst).index(True)
-            if inst != 0: y[t,label_index] = note
+                bar.next()
 
-        bar.next()
+            with h5sparse.File('/datadrive/labels.h5') as sparse:
+                sparse.create_dataset(join('sparse','matrix',id),data=segments.tocsr())
 
-    bar.finish()
-    print 'Saving',id,'...'
-    save_npz(join('/datadrive/musicnet/'+dset+'/labels',str(id)),y.tocsr())
-    print id,'Saved!'
-    del y
-    collect()
+            bar.finish()
+            print('Done!')
 
-dset = 'test'
+            del segments
+            collect()
+
 def main():
+    ids = musicnet.MusicNet().ids
 
-    ids = [ int(x[-8:-4]) for x in glob('/datadrive/musicnet/'+dset+'/data/*.npy')]
-    saved = [ int(x[-8:-4]) for x in glob('/datadrive/musicnet/'+dset+'/labels/*.npz')]
-
-    pool = Pool(cpu_count())
+    #pool = Pool(cpu_count())
     for id in ids :
-        if id not in saved :
-            pool.apply_async(processdata, args=(id,))
+        processdata(id)
+        #pool.apply_async(processdata, args=(id,))
 
     # wait for threads to finish
-    pool.close()
-    pool.join()
+    #pool.close()
+    #pool.join()
 
 main()

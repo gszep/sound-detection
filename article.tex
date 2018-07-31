@@ -114,9 +114,6 @@ instruments based on their spectral signature at any moment in time. The decibel
 spectrogram $S(\omega,t)$ is obtained by taking the $\log_{10}$ absolute value
 of a short-time fourier transform.
 \begin{align}
-	\omega(n)=2^{\frac{n-69}{12}}\,440.0\mathrm{Hz}
-\end{align}
-\begin{align}
 	S(\omega,t):=\log_{10}\left[\left|\,
 	\int_{-\infty}^{\infty}\!
 		x(\tau)\mathbb{e}^{-\mathbb{i}\omega \tau}h(\tau-t)
@@ -124,14 +121,26 @@ of a short-time fourier transform.
 	\,\right|\right]
 \end{align}
 A suitable window function $h(t)$ must be chosen; different choices lead to
-different amounts of spectral leakage and time-frequency domain resolution \cite{}.
-For demonstration purposes a ~100ms wide square window is chosen, which is on the
-order of the shortest duration of a musical sound.
+different amounts of spectral leakage and time-frequency domain resolution
+\cite{}. For demonstration purposes a ~46ms wide Hann window is chosen with a
+stride of ~3ms, which is on the order of the shortest duration of a musical
+sound.
+
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{signal}
+\includegraphics[scale=0.5]{spectrogram}
+\caption{
+Raw input signal (top) labelled by instrument activation $\bar{\mathrm{y}}(t)$
+and its corresponding spectrogram (bottom)
+}
+\label{fig:methods}
+\end{figure}
 
 The spectral signature of the input signal at a given time $t$ can be
 represented as a point in $F$ dimensional point, where $F$ is the number
 of frequency bins up to a given cutoff frequency. $F=500$
-
 \begin{enumerate}
 	\item get spectrogram using windowed Fourier transform or Gabor transforms,
 	discuss spectral leakage, contrast, normalisation and noise filtering in an

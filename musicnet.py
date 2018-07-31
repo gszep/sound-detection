@@ -1,14 +1,10 @@
-from mmap import mmap,MAP_SHARED,PROT_READ
-from numpy import array,uint8,frombuffer,float32
+from numpy import array,uint8,float32
 from numpy.random import choice,randint
 from numpy.linalg import norm
-from scipy.sparse import load_npz
+from scipy.sparse import lil_matrix
 
-import os
-from os import listdir
+import h5py,h5sparse
 from os.path import join
-
-from progress.bar import Bar
 from gc import collect
 
 sz_float = 4 # float32 in bytes
@@ -31,101 +27,53 @@ class MusicNet(Dataset):
             number of datum pairs per epoch
     """
 
-    def __init__(self, dataset='test', window=None, epoch_size=100000):
-
-        self.root = '/datadrive/musicnet'
-        self.sample_frequency = 44100
-
-        self.window = window*self.sample_frequency if window is not None else None
-        self.size = epoch_size
-
-        # setting paths to labels and data
-        assert dataset in ['train','test'], "dataset must be 'train' or 'test'"
-        self.data_path = join(self.root,dataset,'data')
+    def __init__(self, window=None, epoch_size=100000):
 
         self.labels = array([ 1, 7, 41, 42, 43, 44, 61, 69, 71, 72, 74], dtype=uint8)
-        self.labels_path = join(self.root,dataset,'labels')
+        self.sample_frequency = 44100
 
-        # initialising empty dataset
-        self.records = dict()
-        self.labels = dict()
+        self.window = int(window*self.sample_frequency) if window is not None else None
+        self.size = epoch_size
 
-        self.ids = []
-        self.open_files = []
+        # initialising dataset
+        self.data_path = '/datadrive/musicnet.h5'
+        self.labels_path = '/datadrive/labels.h5'
+
+        with h5sparse.File(self.labels_path,'r') as file:
+            self.ids = list(file['sparse/matrix'].h5py_group)
 
     def __enter__(self):
-        """Load dataset upon entering with <MusicNet>: statement"""
-        records = listdir(self.data_path)
-        bar = Bar('Loading database', max=len(records))
-
-        for record in records:
-            if not record.endswith('.npy'): continue
-
-            id = int(record[:-4])
-            self.ids += [id]
-
-            file_pointer = os.open(join(self.data_path,record), os.O_RDONLY)
-            buffer = mmap(file_pointer, 0, MAP_SHARED, PROT_READ)
-
-            with open(join(self.labels_path,str(id)+'.pckl'),'r') as file:
-                self.labels[id] = pickle.load(file)
-
-            self.records[id] = buffer, len(buffer)/sz_float
-            self.open_files.append(file_pointer)
-            bar.next()
-
-        bar.finish()
+        """Open file upon entering with <MusicNet>: statement"""
+        self.data = h5py.File(self.data_path,'r')
+        self.labels = h5sparse.File(self.labels_path,'r')
         return self
 
     def __exit__(self, *args):
-        """Clear memory upon exit of with <MusicNet>: statement"""
+        """Close file and clear memory upon exit of with <MusicNet>: statement"""
+        self.data.close()
+        self.labels.h5f.close()
 
-        for buffer,labels,size in self.records.values():
-            buffer.close()
-
-        for file_pointer in self.open_files:
-            os.close(file_pointer)
-
-        self.records = dict()
-        self.labels = dict()
-
-        self.open_files = []
+        del self.data
+        del self.labels
         collect()
-
-    def access(self,id,s):
-        """
-        Args:
-            id (int): MusicNet id of the requested recording
-            s (int): Position of the requested data point
-        Returns:
-            tuple: (audio, target) where target is a binary vector indicating notes on at the center of the audio.
-        """
-
-        buffer,size = self.records[id]
-        data = frombuffer(buffer[s*sz_float:(s+self.window)*sz_float], dtype=float32).copy()
-
-        segments = lil_matrix((self.window,11,10),dtype=float32)
-        for t in xrange(self.window):
-
-            for inst,note,_,_,_ in self.labels[id][s+t].data :
-                label_index = list(datalabels==inst).index(True)
-
-                if inst != 0:
-                    y[t,label_index,] = note
-
-        data /= norm(data) + epsilon
-        return data,segments
 
     def __getitem__(self, index):
         """
-        Returns random (audio,score) pair
+        Returns random window of (audio,score) pair
         """
 
+        # select random window
         id = choice(self.ids)
-        buffer,size = self.records[id]
+        data = self.data[id]['data']
+        segments = self.labels[join('sparse','matrix',id)]
 
-        t = randint(0,size-self.window)
-        return self.access(id,t)
+        if self.window is not None :
+            t = randint(0,len(data)-self.window)
+            return data.value[t:t+self.window],segments[t:t+self.window].toarray().astype(uint8)
+
+        else :
+            return data.value,segments.value.toarray().astype(uint8)
+
 
     def __len__(self):
         return self.size

@@ -1,4 +1,5 @@
-from numpy import array,mean,std,exp,sqrt,pi,gradient,vstack,amax,linspace,meshgrid
+from numpy import array,ndarray,mean,std,exp,cos,sqrt,pi,gradient,vstack,amax,arange,linspace,meshgrid,log10,zeros,hstack,abs
+from numpy.fft import rfft,rfftfreq
 from scipy.signal import fftconvolve
 
 from itertools import islice, chain
@@ -28,7 +29,7 @@ def standardise(x,axis=None) :
     if axis == 1 :
         return ((x.T-mean(x,axis=axis))/(std(x,axis=axis)+epsilon)).T
     else :
-        NotImplemented('only axis=0 or axis=1 work for now')
+        raise NotImplementedError('only axis=0 or axis=1 work for now')
 
 
 def gaussian(x,mean=0.0,std=1.0) :
@@ -55,10 +56,9 @@ def gaussian(x,mean=0.0,std=1.0) :
     return exp(-((x-mean)/std)**2) / sqrt(2*pi*std**2)
 
 
-def stft(signal,time,window=0.1) :
+def stft(signal, window=128, step=65 ):
     """
-    Perform a shoft-time fourier transform with a window function
-    given by the default parameters specified in MusicNet
+    Perform a shoft-time fourier transform with a Hann window
     https://en.wikipedia.org/wiki/Short-time_Fourier_transform
 
     Paramters
@@ -66,85 +66,84 @@ def stft(signal,time,window=0.1) :
     signal : <numpy.ndarray>
         array of shape length n_points of a single-channel signal
 
-    time : <numpy.ndarray>
-        one dimensional array of timepoints at which signal was sampled
+    window : int
+        number of samples per window
 
-    freq : <numpy.ndarray>
-        one dimensional array of freqencies to evaluate; defaults to all
-        up to the nyquist frequency, at the limiting resolution.
+    step : int
+        stride of window, determines overlap
 
     Returns
     ---------
     time,frequency,stft : <numpy.ndarray>,<numpy.ndarray>,<numpy.ndarray>
         time and frequency mesh aligned with stft spectorgram
+        assuming 44100Hz sampling rate
 
     ---------
     """
 
-    # getting frequency-time grid
-    dt = mean(gradient(time))
-    f_nyquist = 0.5/dt
+    signal -= signal.mean()
+    freq = rfftfreq(window, d = 1/44100.0 )
 
-    # logarithmic binning
-    notes = linspace(0,108,108*4)
-    freq = 2**((notes-69)/12.0)*440.0
+    # construct hann windows
+    windows,time = overlap(signal, window, step)
+    windows *= 0.54-0.46*cos(2*pi*arange(window)/(window-1))
 
-    assert amax(freq) <= f_nyquist,'maximal frequency {}Hz must be less than nyquist {}Hz'.format(
-        amax(freq),f_nyquist)
-
-    # construct window function
-    window = array(int(44100*window)*[1])
-
-    # multithreaded batched fftconvolve
-    pool = Pool(cpu_count())
-    results = []
-
-    batch_size = freq.size/(10*cpu_count())+1
-    for freq_batch in batch(freq,batch_size) :
-
-        results += [
-            pool.apply_async(
-                fftconvolvebatch, args=(signal,time,freq_batch,window)) ]
-
-    # wait for threads to finish
-    pool.close()
-    pool.join()
-
-    # collect and return results
-    results = vstack([ array(result.get()) for result in results ])
-    time_grid,freq_grid = meshgrid(time,freq,copy=False)
-    return time_grid,freq_grid,results
+    # return rfft along window axis
+    return time,freq,rfft(windows).T
 
 
-def fftconvolvebatch(signal,time,freq_batch,window,mode='same') :
+def overlap(signal, window_size, window_step):
     """
-    Batch compute <scipy.signal.fftconvolve>;
-    see its docstring for further details
-
-    Paramters
-    ---------
-    signal_batch : [ <numpy.ndarray> ... <numpy.ndarray> ]
-        list of one dimensional arrays of length n_points to convolve
-
-    window : <numpy.ndarray>
-        one dimensional array to perform convolution with
-
+    Create an overlapped version of X
+    Parameters
+    ----------
+    signal : ndarray, shape=(n_samples,)
+        Input signal to window and overlap
+    window_size : int
+        Size of windows to take
+    window_step : int
+        Step size between windows
     Returns
-    ---------
-    results : [ <numpy.ndarray> ... <numpy.ndarray> ]
-        results of <scipy.signal.fftconvolve> for batch
+    -------
+    X_strided : shape=(n_windows, window_size)
+        2D array of overlapped X
+    """
+    if window_size % 2 != 0:
+        raise ValueError("Window size must be even!")
 
-    ---------
+    # pad signal with zeros
+    padded_signal = hstack((zeros(window_size//2),signal,zeros(window_size//2)))
+
+    n_windows = len(signal) // window_step+1
+    out = ndarray((int(n_windows),int(window_size)),dtype=signal.dtype)
+
+    for i in range(int(n_windows)):
+        # "slide" the window along the samples
+        start = int( i * window_step )
+        stop = int( start + window_size )
+        out[i] = padded_signal[start : stop]
+
+    time = linspace(0,len(signal),n_windows)/44100.0
+    return out,time
+
+def spectrogram(d,window=2048,step=2048/16,thresh=4):
+    """
+    creates a spectrogram
+    thresh: threshold minimum power for log spectrogram
     """
 
-    results = []
-    for freq in freq_batch :
-        results += [ fftconvolve(signal*exp(-2j*pi*time*freq),window,mode) ]
+    # calculate
+    time,freq,fft = stft(d,window,step)
+    specgram = abs(fft)
 
-    return results
+    # threshold
+    specgram = specgram[freq<4200]
+    freq = freq[freq<4200]
 
+    # normalise
+    specgram /= specgram.max() # volume normalize to max 1
+    specgram = log10(specgram) # take log
+    specgram[specgram < -thresh] = -thresh
 
-def batch(l, n):
-    """Yield successive n-sized batches from array"""
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
+    time_grid,freq_grid = meshgrid(time,freq,copy=False)
+    return time_grid,freq_grid,specgram
