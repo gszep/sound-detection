@@ -73,13 +73,22 @@ The input data are single channel time-series points $\mathcal{D}=\{x(t_1)\dots
 x(t_N)\}$ sampled at frequency $f$ from an underlying continuous state-time
 process $x(t)$, that is the oscillating sound waves emitted by a live orchestra.
 \\\\
-For each time point there is a musical score $\bar{\mathrm{L}}(t)\in[0,128]^L$ which
-represents the midi notes played by $L$ instruments of a particular note on a particular instrument. These scores
-are composed by $Y$ instrument activations $\bar{\mathrm{y}}(t)\in[0,1]^Y$ and $N$
-note activations $\bar{\mathrm{n}}(t)\in[0,1]^N$.
+For each time point there is a polyphonic score matrix $\mathbf{L}(t)\in\{0,1\}^{N\times L}$ which
+representing the $N$ midi notes played by $L$ instruments. Instrument activations
+$\bar{\mathrm{y}}(t)\in\{0,1\}^L$ and $N$ note activations
+$\bar{\mathrm{n}}(t)\in\{0,1\}^N$ can be individually considered as well as only
+changepoints between states.
+\noindent
+The most difficult task is to recover the polyphonic score matrix
+$\mathbf{L}(t)\in\{0,1\}^{N\times L}$ from the input signal $x(t)$. The score matrix
+is generally sparse as playing too many notes with too many instruments at the
+same time sounds terrible. Sparse labels lead to sparse learning signals which
+hamper the convergence of machine learning algorithms. Thus we first look to
+recover changepoints and then the more densly labelled $\bar{\mathrm{n}}(t)\in\{0,1\}^N$
+and $\bar{\mathrm{y}}(t)\in\{0,1\}^L$.
+From this we attempt to recover the full matrix in post-processing.
 \\\\
-The task is to recover instrument activations $\bar{\mathrm{y}}(t)$ from
-the input signal $x(t)$. Within unsupervised methods this task is known as
+Within unsupervised methods this task is known as
 under-determined blind source separation. When the number of input channels
 equals to the number of sources this problem is fully determined and can be
 solved using independent component analysis
@@ -106,7 +115,6 @@ Note that the map $f$ is most likely not one-to-one respect to $t$. It is not a
 single time point but a time window that encodes which instrument is being
 played. While linear separability via $\mathbf{W}$ by is sufficient it is not
 necessary; one could instead simply look for clusters.
-
 \subsubsection{Wavelet transforms and independent components}
 The naive approach would be to attempt to guess the mapping $f$ via suitable
 phenomenological agruments. It is reasonable to suppose that one could separate
@@ -122,25 +130,59 @@ of a short-time fourier transform.
 \end{align}
 A suitable window function $h(t)$ must be chosen; different choices lead to
 different amounts of spectral leakage and time-frequency domain resolution
-\cite{}. For demonstration purposes a ~46ms wide Hann window is chosen with a
-stride of ~3ms, which is on the order of the shortest duration of a musical
+\cite{}. For demonstration purposes a 46ms wide Hann window is chosen with a
+stride of 3ms, which is on the order of the shortest duration of a musical
 sound.
-
 \begin{figure}[H]
 \centering{}
 \captionsetup{justification=centering}
 \includegraphics[scale=0.5]{signal}
+\caption{
+Input signal labelled with changepoints in polyphonic score $\mathbf{L}(t)$}
+\label{fig:signal}
+\end{figure}
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
 \includegraphics[scale=0.5]{spectrogram}
 \caption{
-Raw input signal (top) labelled by instrument activation $\bar{\mathrm{y}}(t)$
-and its corresponding spectrogram (bottom)
+Spectrogram $S(\omega,t)$ with dominant frequency labelled by instrument $\bar{\mathrm{y}}(t)$
 }
-\label{fig:methods}
-\end{figure}
-
+\label{fig:spectrogram}
+\end{figure}\noindent
 The spectral signature of the input signal at a given time $t$ can be
-represented as a point in $F$ dimensional point, where $F$ is the number
-of frequency bins up to a given cutoff frequency. $F=500$
+represented as an $F$ dimensional point, where $F$ is the number
+of frequency bins up to a given cutoff frequency calculated in the
+spectrogram. The spectrogram in Figure \ref{fig:spectrogram} shows a
+promising variety of signatures within domain $\Omega$ that may differentiate between instruments.
+This observation motivates the calculation of spectral speed $v(t)$ defined as
+\begin{align}
+	v(t):= \frac{1}{|\Omega|}\int_{\Omega}\!\big|\partial_tS(\omega,t)\big|\,\mathrm{d}\omega
+\end{align}
+Figure \ref{fig:speed} reveals that peaks in spectral speed $v(t)$ typically
+coincide with changepoints in notes and stepwise changes may indicate changepoints
+in instruments. Peaks can be detected using wavelet transform approaches \cite{Du2006}
+and true positives are counted when a detected peak lies within threshold time $\tau$
+of a ground truth changepoint.
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{detections}
+\caption{
+Spectral speed $v(t)$ labelled by \color{DarkGreen}{true positive}, \color{orange}{false positive}
+$\color{red}{\text{false negative}}$ changepoint detections
+}
+\label{fig:speed}
+\end{figure}
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{pr}
+\caption{
+Changepoint precision-recall curves given by peaks in spectral speed $v(t)$
+}
+\label{fig:pr}
+\end{figure}
 \begin{enumerate}
 	\item get spectrogram using windowed Fourier transform or Gabor transforms,
 	discuss spectral leakage, contrast, normalisation and noise filtering in an

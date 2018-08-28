@@ -1,4 +1,5 @@
 from numpy import *
+from numpy.random import randint
 import musicnet
 
 from scipy.sparse import lil_matrix
@@ -37,7 +38,7 @@ def processdata(id):
                 label_index = list(datalabels==instrument).index(True)
 
                 for t in range(start_time,end_time) :
-                    segments[t,label_index] = 1
+                    segments[t,label_index] = note
 
                 bar.next()
 
@@ -53,13 +54,13 @@ def processdata(id):
 def main():
     ids = musicnet.MusicNet().ids
 
-    #pool = Pool(cpu_count())
+#    pool = Pool(cpu_count())
     for id in ids :
         processdata(id)
-        #pool.apply_async(processdata, args=(id,))
+#        pool.apply_async(processdata, args=(id,))
 
     # wait for threads to finish
-    #pool.close()
-    #pool.join()
+#    pool.close()
+#    pool.join()
 
 main()

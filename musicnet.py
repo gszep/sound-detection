@@ -41,6 +41,8 @@ class MusicNet(Dataset):
 
         with h5sparse.File(self.labels_path,'r') as file:
             self.ids = list(file['sparse/matrix'].h5py_group)
+        # with h5py.File(self.data_path,'r') as file:
+        #     self.ids = list(file)
 
     def __enter__(self):
         """Open file upon entering with <MusicNet>: statement"""
