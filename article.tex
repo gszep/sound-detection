@@ -8,6 +8,7 @@
 \usepackage[space]{grffile}
 
 \usepackage[a4paper]{geometry}
+\usepackage[dvipsnames]{xcolor}
 \geometry{verbose}
 
 \usepackage{float}
@@ -115,7 +116,7 @@ Note that the map $f$ is most likely not one-to-one respect to $t$. It is not a
 single time point but a time window that encodes which instrument is being
 played. While linear separability via $\mathbf{W}$ by is sufficient it is not
 necessary; one could instead simply look for clusters.
-\subsubsection{Wavelet transforms and independent components}
+\subsubsection{Wavelet transforms and spectral speed}
 The naive approach would be to attempt to guess the mapping $f$ via suitable
 phenomenological agruments. It is reasonable to suppose that one could separate
 instruments based on their spectral signature at any moment in time. The decibel
@@ -163,33 +164,34 @@ Figure \ref{fig:speed} reveals that peaks in spectral speed $v(t)$ typically
 coincide with changepoints in notes and stepwise changes may indicate changepoints
 in instruments. Peaks can be detected using wavelet transform approaches \cite{Du2006}
 and true positives are counted when a detected peak lies within threshold time $\tau$
-of a ground truth changepoint.
+of a ground truth changepoint. Evaluations of 1000 clips of 5s from MusicNet
+in Figure \ref{fig:pr} show that within 60ms a window approximately 60\% of the changepoints can be recalled with 60\% precision.
+The duration of a quaver amongst Beethoven symphonies range 40-125ms. This suggests
+that note changepoints more readily distinguised in slower symphonies. Such a claim
+is supported by the example in \ref{fig:speed}, which shows a higher prevelance of
+false positives and negatives in the fast paced signal on the left-hand side.
+This approach is not precise enough to proceed with classification of the
+segments between changepoints.
 \begin{figure}[H]
 \centering{}
 \captionsetup{justification=centering}
-\includegraphics[scale=0.5]{detections}
+\includegraphics[scale=0.42]{detections}
 \caption{
-Spectral speed $v(t)$ labelled by \color{DarkGreen}{true positive}, \color{orange}{false positive}
-$\color{red}{\text{false negative}}$ changepoint detections
+Spectral speed $v(t)$ labelled by $\color{Green}{\text{true positive}}$\\ $\color{orange}{\text{false positive}}$
+and $\color{red}{\text{false negative}}$ changepoint detections
 }
 \label{fig:speed}
 \end{figure}
 \begin{figure}[H]
 \centering{}
 \captionsetup{justification=centering}
-\includegraphics[scale=0.5]{pr}
+\includegraphics[scale=0.42]{pr}
 \caption{
 Changepoint precision-recall curves given by peaks in spectral speed $v(t)$
 }
 \label{fig:pr}
 \end{figure}
-\begin{enumerate}
-	\item get spectrogram using windowed Fourier transform or Gabor transforms,
-	discuss spectral leakage, contrast, normalisation and noise filtering in an
-	unsupervised way
-	\item perform principal components and independent component dimensionality
-	reduction along frequency dimension, discuss differences between them.
-\end{enumerate}
+
 \subsubsection{Markov models and expectation-maximisation}
 \begin{enumerate}
 	\item discuss implementations of random Markov fields in image segmentation
