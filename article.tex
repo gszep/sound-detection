@@ -47,10 +47,10 @@
 \begin{document}
 
 \title{
-Time-series segmentation and latent\\ representation of musical instruments
+Changepoint detection in an\\orchestra of musical instruments
 }
 
-\author{Gregory Szep}
+\author{Student 1118161}
 \affil{King's College London}
 \date{\today}
 \maketitle
@@ -59,15 +59,19 @@ Time-series segmentation and latent\\ representation of musical instruments
 \noindent
 Music information retrieval tasks serve as faithful benchmarks for
 time-series analysis pipelines due to the availability of strongly labelled
-training data such as MusicNet. Clustering algorithms in spectral sub-spaces,
+training data such as MusicNet. Q peak detection algorithm on a hand-crafted feature,
 hidden Markov models and causal convolutional neural networks are compared in
-their ability to transform time-series to a continuous latent space that
-clusters eleven orchestral instruments. The latent space is evaluated
-quantitatively with precision-recall metrics obtained by comparing the
-instrument prediction from a segment of audio to the ground truth obtained
-from musical scores, and qualitatively by generating samples of audio for given
-regions in the latent space.}
-
+their ability to detect changepoints in recordings of eleven orchestral instruments.
+Detections are evaluated quantitatively with precision-recall metrics.}
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{methods}
+\caption{Summary of methodology showing all stages of the audio segmentation task.\\
+Each transition between sub-figures can be achieved with appropriate algorithms
+}
+\label{fig:methods}
+\end{figure}
 \section{Methodology Outline}
 \subsection{Mapping time-series to latent space}
 The input data are single channel time-series points $\mathcal{D}=\{x(t_1)\dots
@@ -172,6 +176,7 @@ is supported by the example in \ref{fig:speed}, which shows a higher prevelance 
 false positives and negatives in the fast paced signal on the left-hand side.
 This approach is not precise enough to proceed with classification of the
 segments between changepoints.
+
 \begin{figure}[H]
 \centering{}
 \captionsetup{justification=centering}
@@ -191,98 +196,100 @@ Changepoint precision-recall curves given by peaks in spectral speed $v(t)$
 }
 \label{fig:pr}
 \end{figure}
-
-\subsubsection{Markov models and expectation-maximisation}
-\begin{enumerate}
-	\item discuss implementations of random Markov fields in image segmentation
-	and how they can be adapted to audio segmentation
-	\item random Markov field vs hidden Markov model?
-	\item expectation-maximisation vs error back-propagation
-\end{enumerate}
-\subsubsection{Feature extraction with causal convolutions}
-Convolutional architectures have become popular due to their ability to compress spatio-temporal
-information for discrimination and generation tasks \cite{Oord2016a,Goodfellow}.
-A causal convolutional network \cite{Oord2016} --- which encodes the arrow of time in
-its architecture --- is trained for the audio segmentation task.
-\begin{enumerate}
-	\item dilated causal convolutions as a merge between a feature
-	extractor and a dimensionality reduction technique. This is a supervised method
-	\item Compare clusters to those obtained in Section 1.1.1
-\end{enumerate}
-\subsection{Clustering in latent space}
-\begin{enumerate}
-	\item We have a hierarchical clustering problem: there are 11 instruments each
-	of which can play 28-83 notes. The easier problem is to only cluster instruments,
-	the harder problem is to cluster both instruments and notes.
-\end{enumerate}
-
-\subsubsection{K-means}
-
-\begin{enumerate}
-	\item Since we know how many instruments there are, we can apply a naive K-means
-	and see what happens. Here the disadvantage is that time-ordering may be
-	ignored, which can lead to noisy/discontinuous audio segment classifications
-	\item Discuss de-noising strategies in post-classification: possibly Markov
-	random fields from section 1.1.2?
-\end{enumerate}
-
-\subsubsection{Fully convolutional networks}
-\begin{enumerate}
-	\item I shall attempt to adapt the the fully convolutional architecture \cite{Long2015}
-	for the audio segmentation task. Discuss advantages of end-to-end trained solution.
-\end{enumerate}
-
-\subsection{Evaluation methods}
-\subsubsection{Audio segment retrieval}
-\begin{enumerate}
-	\item outline of object detection / segmentation in image analysis
-	\item precision-recall metric applied to audio
-\end{enumerate}
-\subsubsection{Instrument generation}
-\begin{enumerate}
-	\item introduction to encoder / decoder pipelines as generative models which
-	can produce data given activation of input in latent space.
-	\item attempt to produce sounds that are interpolations between
-	existing instruments, assess qualitatively how realistic they sound
-\end{enumerate}
-
-
+\subsubsection{Markov models and expectation-maximisation} Hidden Markov models
+with Gaussian mixture emissions have been successful in the first generation of
+speech recognition piplines. Taking inspiration from these piplines, 11 separate
+bimodal Gaussian models are fitted via expectation-maximisation to 11 separate datasets. Each dataset
+contains 16 minute continuous concatinated spectrogram of a single instrument. Three
+hidden states maximise the average likelihood of across models. The classification
+of any new audio segment is given by the maximum likelihood model.
+\\\\
+Figure \ref{fig:confusion} shows classification results for 1000 clips each
+lasting 100ms, whos ground truth labels are given by the dominant instrument in
+the clip. With an average total accuracy of 73\% it outperforms the hand-crafted changepoint
+classifier in Section 1.1.1. Changepoints are detected as the boundary between
+any two classes, yielding the precision-recall curve in Figure \ref{fig:pr2}
 \begin{figure}[H]
 \centering{}
 \captionsetup{justification=centering}
-\includegraphics[scale=0.5]{methods}
-\caption{Summary of methodology showing all stages of the audio segmentation task.\\
-Each transition between sub-figures can be achieved with appropriate algorithms
+\includegraphics[scale=0.42]{confusion}
+\caption{
+Instrument confusion matrix given by maximum likelihood \\
+Gaussian mixture Markov models for 100ms clip test set
 }
-\label{fig:methods}
+\label{fig:confusion}
+\end{figure}
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.42]{pr2}
+\caption{
+Changepoint precision-recall curves given by classification boundaries of\\
+maximum likelihood bimodal Gaussian mixture emissions Markov models
+}
+\label{fig:pr2}
 \end{figure}
 
-\section{Dataset Description}
-
-\subsection{Input and Labels}
-\begin{enumerate}
-	\item small summary table of the MusicNet dataset \cite{Thickstun2016}, advantages
-	over EEG and other bio-sensory data for bench-marking signal processing algorithms
-	\item raw labels are time aligned transcripts of the sheet music. How to we
-	parse that into instrument activations and note activations.
-	\item cross-validation --- if any
-\end{enumerate}
-
-\subsection{Data Partitioning}
-\begin{enumerate}
-	\item test, validation and train sets
-	\item cross-validation --- if any
-\end{enumerate}
-
-\section{Results, Protocols and Conclusions}
-\begin{enumerate}
-	\item all relevant figures will be presented here
-\end{enumerate}
-\subsection{Learned feature maps}
-
-\subsection{Clustering performance}
-
-\subsection{Generating instruments}
+\subsubsection{Feature extraction with causal convolutions}
+Convolutional architectures have become popular due to their ability to compress spatio-temporal
+information for discrimination and generation tasks \cite{Oord2016a,Goodfellow}.
+A causal convolutional network \cite{WaveNet} --- which encodes the arrow of time in
+its architecture --- is trained for the audio segmentation task.
+\\\\
+Often the performance of the classifiers is hampered by poor choices of feature
+space. Using the spectrogram as an input feature space in Sections 1.1.1 and
+1.1.2 involves assumptions and arbitrary choices in the hyperparameters, such as
+the shape of the wavelet window $h(t)$. Figure \ref{fig:wavenet} reveals a
+schematic of the architecture of WaveNet, where the inputs are the audio samples
+preceeding the next output sample. The arrow of time is encoded by the one-sided
+convolutions and the dilated/downsampled layers serve to reduce dimensionality
+and aggregate long range features in the waveform. In the original paper this
+architecture was trained to generate the next audio sample, based on previous
+samples. In our application we may ask for the instrument classification or
+probability of changepoint as an output.
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{wavenet}
+\caption{
+Causal convolutional architecture of WaveNet. Figure taken from \cite{WaveNet}
+}
+\label{fig:wavenet}
+\end{figure}\noindent
+Since this model takes the form of a computational graph, the back-propagation
+algorithm can be used to train it. This algorithm has an intrinsic advantage over
+expectation-maximisation as it can be optimally run on a GPU, which enables the
+training on much larger datasets. Large test and training sets are necessary
+for the models to generalise rather than overfit.
+\\\\
+\\\\
+Due to time constraints and hardware limitations a smaller subset of MusicNet ---
+1 minute per instrument --- was used as a training set to demonstrate overfitting.
+A standard adaptive momentum gradient descent method \cite{Kingma2014} was used
+and changepoints were detected as the boundary between any two classes on the same
+test set as in Section 1.1.2. Figure \ref{fig:backprop} reveals the convergence
+of the training protocol, giving rise to a very sensitive and nonspecific
+changepoint classifier as shown by precision-recall curves in Figure \ref{fig:overfit}.
+The relaively poor precision could be accounted for by the noisy classification
+on the test set.
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{backprop}
+\caption{
+Training loss as a function of ADAM epoch, showing convergence of WaveNet
+}
+\label{fig:backprop}
+\end{figure}\noindent
+\begin{figure}[H]
+\centering{}
+\captionsetup{justification=centering}
+\includegraphics[scale=0.5]{overfit}
+\caption{
+Changepoint precision-recall curves given by classification boundaries of WaveNet
+}
+\label{fig:overfit}
+\end{figure}
 
 \bibliography{mendeley_v2}
 \bibliographystyle{ieeetr}
